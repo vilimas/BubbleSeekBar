@@ -28,52 +28,49 @@ public class DemoFragment3 extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_demo_3, container, false);
         BubbleSeekBar bubbleSeekBar1 = (BubbleSeekBar) view.findViewById(R.id.demo_3_seek_bar_1);
-        BubbleSeekBar bubbleSeekBar2 = (BubbleSeekBar) view.findViewById(R.id.demo_3_seek_bar_2);
+        final BubbleSeekBar bubbleSeekBar2 = (BubbleSeekBar) view.findViewById(R.id.demo_3_seek_bar_2);
         BubbleSeekBar bubbleSeekBar3 = (BubbleSeekBar) view.findViewById(R.id.demo_3_seek_bar_3);
         BubbleSeekBar bubbleSeekBar4 = (BubbleSeekBar) view.findViewById(R.id.demo_3_seek_bar_4);
 
         bubbleSeekBar1.getConfigBuilder()
-                .min(0)
-                .max(50)
-                .progress(20)
-                .sectionCount(5)
-                .trackColor(ContextCompat.getColor(getContext(), R.color.color_gray))
-                .secondTrackColor(ContextCompat.getColor(getContext(), R.color.color_blue))
-                .thumbColor(ContextCompat.getColor(getContext(), R.color.color_blue))
+                .min(2f)
+                .max(7f)
+                .floatType()
+                .setFloatPrecision(3)
+                .sectionCount(10)
+                .touchToSeek()
+                .sectionTextInterval(2)
+                .trackColor(ContextCompat.getColor(getContext(), R.color.color_red_light))
+                .secondTrackColor(ContextCompat.getColor(getContext(), R.color.color_red))
                 .showSectionText()
-                .sectionTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary))
-                .sectionTextSize(18)
                 .showThumbText()
-                .thumbTextColor(ContextCompat.getColor(getContext(), R.color.color_red))
-                .thumbTextSize(18)
-                .bubbleColor(ContextCompat.getColor(getContext(), R.color.color_green))
-                .bubbleTextSize(18)
-                .showSectionMark()
-                .seekBySection()
-                .autoAdjustSectionMark()
                 .sectionTextPosition(BubbleSeekBar.TextPosition.BELOW_SECTION_MARK)
                 .build();
 
         bubbleSeekBar2.getConfigBuilder()
-                .min(-50)
-                .max(50)
+                .min(0)
+                .max(5f)
+                .floatType()
+                .setFloatPrecision(3)
                 .sectionCount(10)
+                .touchToSeek()
                 .sectionTextInterval(2)
                 .trackColor(ContextCompat.getColor(getContext(), R.color.color_red_light))
                 .secondTrackColor(ContextCompat.getColor(getContext(), R.color.color_red))
-                .seekBySection()
                 .showSectionText()
+                .showThumbText()
                 .sectionTextPosition(BubbleSeekBar.TextPosition.BELOW_SECTION_MARK)
                 .build();
 
         bubbleSeekBar3.getConfigBuilder()
                 .min(1)
-                .max(1.5f)
+                .max(50f)
                 .floatType()
-                .sectionCount(10)
                 .secondTrackColor(ContextCompat.getColor(getContext(), R.color.color_green))
                 .showSectionText()
                 .showThumbText()
+                .touchToSeek()
+                .setFloatPrecision(2)
                 .build();
 
         bubbleSeekBar4.getConfigBuilder()
@@ -83,10 +80,28 @@ public class DemoFragment3 extends Fragment {
                 .floatType()
                 .sectionCount(10)
                 .sectionTextInterval(2)
+                .touchToSeek()
                 .showSectionText()
                 .sectionTextPosition(BubbleSeekBar.TextPosition.BELOW_SECTION_MARK)
                 .autoAdjustSectionMark()
                 .build();
+
+        bubbleSeekBar1.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListener() {
+            @Override
+            public void onProgressChanged(int progress, float progressFloat) {
+                bubbleSeekBar2.setProgress(progressFloat);
+            }
+
+            @Override
+            public void getProgressOnActionUp(int progress, float progressFloat) {
+
+            }
+
+            @Override
+            public void getProgressOnFinally(int progress, float progressFloat) {
+
+            }
+        });
 
         return view;
     }

@@ -90,6 +90,7 @@ public class BubbleSeekBar extends View {
     private int mBubbleColor;// color of bubble
     private int mBubbleTextSize; // text size of bubble-progress
     private int mBubbleTextColor; // text color of bubble-progress
+    private int mBubbleSize;
 
     private float mDelta; // max - min
     private float mSectionValue; // (mDelta / mSectionCount)
@@ -100,6 +101,7 @@ public class BubbleSeekBar extends View {
     private int mTextSpace; // space between text and track
     private boolean triggerBubbleShowing;
     private boolean triggerSeekBySection;
+    private int floatPrecision;
 
     private OnProgressChangedListener mProgressListener; // progress changing listener
     private float mLeft; // space between left of track and left of the view
@@ -152,6 +154,8 @@ public class BubbleSeekBar extends View {
         mSectionTextSize = a.getDimensionPixelSize(R.styleable.BubbleSeekBar_bsb_section_text_size, sp2px(14));
         mSectionTextColor = a.getColor(R.styleable.BubbleSeekBar_bsb_section_text_color, mTrackColor);
         isSeekBySection = a.getBoolean(R.styleable.BubbleSeekBar_bsb_seek_by_section, false);
+        floatPrecision = a.getInteger(R.styleable.BubbleSeekBar_bsb_float_precision, 1);
+        mBubbleSize = a.getInteger(R.styleable.BubbleSeekBar_bsb_bubble_size, 14);
         int pos = a.getInteger(R.styleable.BubbleSeekBar_bsb_section_text_position, NONE);
         if (pos == 0) {
             mSectionTextPosition = SIDES;
@@ -302,7 +306,7 @@ public class BubbleSeekBar extends View {
         mPaint.getTextBounds(text, 0, text.length(), mRectText);
         int w2 = (mRectText.width() + mTextSpace * 2) >> 1;
 
-        mBubbleRadius = dp2px(14); // default 14dp
+        mBubbleRadius = dp2px(mBubbleSize); // default 14dp
         int max = Math.max(mBubbleRadius, Math.max(w1, w2));
         mBubbleRadius = max + mTextSpace;
     }
@@ -496,7 +500,6 @@ public class BubbleSeekBar extends View {
         if (!isThumbOnDragging || isAlwaysShowBubble) {
             mThumbCenterX = mTrackLength / mDelta * (mProgress - mMin) + xLeft;
         }
-
         // draw thumbText
         if (isShowThumbText && !isThumbOnDragging && isTouchToSeekAnimEnd) {
             mPaint.setColor(mThumbTextColor);
@@ -622,6 +625,7 @@ public class BubbleSeekBar extends View {
                     if (!isHideBubble) {
                         mBubbleCenterRawX = mBubbleCenterRawSolidX + mTrackLength * (mProgress - mMin) / mDelta;
                         mLayoutParams.x = (int) (mBubbleCenterRawX + 0.5f);
+                        addBubbleViewToWindowsManager();
                         mWindowManager.updateViewLayout(mBubbleView, mLayoutParams);
                         mBubbleView.setProgressText(isShowProgressInFloat ?
                                 String.valueOf(getProgressFloat()) : String.valueOf(getProgress()));
@@ -781,11 +785,17 @@ public class BubbleSeekBar extends View {
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animation) {
-                        mWindowManager.addView(mBubbleView, mLayoutParams);
+                        addBubbleViewToWindowsManager();
                     }
                 }).start();
         mBubbleView.setProgressText(isShowProgressInFloat ?
                 String.valueOf(getProgressFloat()) : String.valueOf(getProgress()));
+    }
+
+    private void addBubbleViewToWindowsManager(){
+        if (mBubbleView.getParent() == null){
+            mWindowManager.addView(mBubbleView, mLayoutParams);
+        }
     }
 
     /**
@@ -929,7 +939,11 @@ public class BubbleSeekBar extends View {
     }
 
     public void setProgress(float progress) {
-        mProgress = progress;
+        if (progress < mMax) {
+            mProgress = progress;
+        } else {
+            mProgress = mMax;
+        }
 
         if (mProgressListener != null) {
             mProgressListener.onProgressChanged(getProgress(), getProgressFloat());
@@ -1026,6 +1040,8 @@ public class BubbleSeekBar extends View {
         isAlwaysShowBubble = builder.alwaysShowBubble;
         mAlwaysShowBubbleDelay = builder.alwaysShowBubbleDelay;
         isHideBubble = builder.hideBubble;
+        floatPrecision = builder.floatPrecision;
+        mBubbleSize = builder.bubbleSize;
 
         initConfigByPriority();
         calculateRadiusOfBubble();
@@ -1077,6 +1093,8 @@ public class BubbleSeekBar extends View {
         mConfigBuilder.alwaysShowBubble = isAlwaysShowBubble;
         mConfigBuilder.alwaysShowBubbleDelay = mAlwaysShowBubbleDelay;
         mConfigBuilder.hideBubble = isHideBubble;
+        mConfigBuilder.floatPrecision = floatPrecision;
+        mConfigBuilder.bubbleSize = mBubbleSize;
 
         return mConfigBuilder;
     }
@@ -1115,7 +1133,7 @@ public class BubbleSeekBar extends View {
 
     private float formatFloat(float value) {
         BigDecimal bigDecimal = BigDecimal.valueOf(value);
-        return bigDecimal.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+        return bigDecimal.setScale(floatPrecision, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     /**

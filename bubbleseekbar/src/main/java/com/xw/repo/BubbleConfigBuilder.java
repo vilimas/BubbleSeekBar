@@ -46,6 +46,8 @@ public class BubbleConfigBuilder {
     boolean alwaysShowBubble;
     long alwaysShowBubbleDelay;
     boolean hideBubble;
+    int floatPrecision;
+    int bubbleSize;
 
     private BubbleSeekBar mBubbleSeekBar;
 
@@ -222,6 +224,16 @@ public class BubbleConfigBuilder {
         return this;
     }
 
+    public BubbleConfigBuilder setFloatPrecision(int precisionSize){
+        this.floatPrecision = precisionSize;
+        return this;
+    }
+
+    public BubbleConfigBuilder setBubbleSize(int bubbleSize){
+        this.bubbleSize = bubbleSize;
+        return this;
+    }
+
     public float getMin() {
         return min;
     }
@@ -349,4 +361,8 @@ public class BubbleConfigBuilder {
     public boolean isHideBubble() {
         return hideBubble;
     }
+
+    public int getFloatPrecision(){ return floatPrecision;}
+
+    public int getBubbleSize(){return bubbleSize;}
 }

@@ -657,61 +657,26 @@ public class BubbleSeekBar extends View {
                     }
                 } else if (isThumbOnDragging || isTouchToSeek) {
                     if (isHideBubble) {
-                        animate()
-                                .setDuration(mAnimDuration)
-                                .setStartDelay(!isThumbOnDragging && isTouchToSeek ? 300 : 0)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        isThumbOnDragging = false;
-                                        invalidate();
+                        isThumbOnDragging = false;
+                        invalidate();
 
-                                        if (mProgressListener != null) {
-                                            mProgressListener.onProgressChanged(getProgress(),
-                                                    getProgressFloat());
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onAnimationCancel(Animator animation) {
-                                        isThumbOnDragging = false;
-                                        invalidate();
-                                    }
-                                })
-                                .start();
+                        if (mProgressListener != null) {
+                            mProgressListener.onProgressChanged(getProgress(),
+                                    getProgressFloat());
+                        }
                     } else {
-                        mBubbleView.animate()
-                                .alpha(isAlwaysShowBubble ? 1f : 0f)
-                                .setDuration(mAnimDuration)
-                                .setStartDelay(!isThumbOnDragging && isTouchToSeek ? 300 : 0)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        if (!isAlwaysShowBubble) {
-                                            hideBubble();
-                                        }
 
-                                        isThumbOnDragging = false;
-                                        invalidate();
+                        if (!isAlwaysShowBubble) {
+                            hideBubble();
+                        }
 
-                                        if (mProgressListener != null) {
-                                            mProgressListener.onProgressChanged(getProgress(),
-                                                    getProgressFloat());
-                                        }
-                                    }
+                        isThumbOnDragging = false;
+                        invalidate();
 
-                                    @Override
-                                    public void onAnimationCancel(Animator animation) {
-                                        if (!isAlwaysShowBubble) {
-                                            hideBubble();
-                                        }
-
-                                        isThumbOnDragging = false;
-                                        invalidate();
-                                    }
-                                })
-                                .start();
-
+                        if (mProgressListener != null) {
+                            mProgressListener.onProgressChanged(getProgress(),
+                                    getProgressFloat());
+                        }
                     }
                 }
 
@@ -792,8 +757,8 @@ public class BubbleSeekBar extends View {
                 String.valueOf(getProgressFloat()) : String.valueOf(getProgress()));
     }
 
-    private void addBubbleViewToWindowsManager(){
-        if (mBubbleView.getParent() == null){
+    private void addBubbleViewToWindowsManager() {
+        if (mBubbleView.getParent() == null) {
             mWindowManager.addView(mBubbleView, mLayoutParams);
         }
     }

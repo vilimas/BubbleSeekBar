@@ -20,6 +20,7 @@ import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -86,6 +87,7 @@ public class BubbleSeekBar extends View {
     private boolean isAlwaysShowBubble; // bubble shows all time
     private long mAlwaysShowBubbleDelay; // the delay duration before bubble shows all the time
     private boolean isHideBubble; // hide bubble
+    private String numberPrefix; // set track number string prefix
 
     private int mBubbleColor;// color of bubble
     private int mBubbleTextSize; // text size of bubble-progress
@@ -183,6 +185,7 @@ public class BubbleSeekBar extends View {
         duration = a.getInteger(R.styleable.BubbleSeekBar_bsb_always_show_bubble_delay, 0);
         mAlwaysShowBubbleDelay = duration <= 0 ? 200 : duration;
         isHideBubble = a.getBoolean(R.styleable.BubbleSeekBar_bsb_hide_bubble, false);
+        numberPrefix = a.getString(R.styleable.BubbleSeekBar_bsb_set_track_prefix);
         a.recycle();
 
         mPaint = new Paint();
@@ -509,9 +512,17 @@ public class BubbleSeekBar extends View {
 
             if (isFloatType || (isShowProgressInFloat && mSectionTextPosition == TextPosition.BOTTOM_SIDES &&
                     mProgress != mMin && mProgress != mMax)) {
-                canvas.drawText(String.valueOf(getProgressFloat()), mThumbCenterX, y_, mPaint);
+                if (TextUtils.isEmpty(numberPrefix)) {
+                    canvas.drawText(String.valueOf(getProgressFloat()), mThumbCenterX, y_, mPaint);
+                } else {
+                    canvas.drawText(String.valueOf(getProgressFloat()) + " " + numberPrefix, mThumbCenterX, y_, mPaint);
+                }
             } else {
-                canvas.drawText(String.valueOf(getProgress()), mThumbCenterX, y_, mPaint);
+                if (TextUtils.isEmpty(numberPrefix)) {
+                    canvas.drawText(String.valueOf(getProgress()), mThumbCenterX, y_, mPaint);
+                } else {
+                    canvas.drawText(String.valueOf(getProgressFloat()) + " " + numberPrefix, mThumbCenterX, y_, mPaint);
+                }
             }
         }
 
@@ -1005,6 +1016,7 @@ public class BubbleSeekBar extends View {
         isAlwaysShowBubble = builder.alwaysShowBubble;
         mAlwaysShowBubbleDelay = builder.alwaysShowBubbleDelay;
         isHideBubble = builder.hideBubble;
+        numberPrefix = builder.numberPrefix;
         floatPrecision = builder.floatPrecision;
         mBubbleSize = builder.bubbleSize;
 
@@ -1060,6 +1072,7 @@ public class BubbleSeekBar extends View {
         mConfigBuilder.hideBubble = isHideBubble;
         mConfigBuilder.floatPrecision = floatPrecision;
         mConfigBuilder.bubbleSize = mBubbleSize;
+        mConfigBuilder.numberPrefix = numberPrefix;
 
         return mConfigBuilder;
     }

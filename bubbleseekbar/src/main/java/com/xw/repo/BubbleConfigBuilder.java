@@ -48,6 +48,7 @@ public class BubbleConfigBuilder {
     boolean hideBubble;
     int floatPrecision;
     int bubbleSize;
+    String numberPrefix;
 
     private BubbleSeekBar mBubbleSeekBar;
 
@@ -233,6 +234,13 @@ public class BubbleConfigBuilder {
         this.bubbleSize = bubbleSize;
         return this;
     }
+
+    public BubbleConfigBuilder setNumberPrefix(String prefix) {
+        this.numberPrefix = prefix;
+        return this;
+    }
+
+    public String getNumberPrefix() { return numberPrefix;}
 
     public float getMin() {
         return min;

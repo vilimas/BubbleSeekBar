@@ -42,5 +42,6 @@
         <attr name="bsb_hide_bubble" format="boolean"/> <!--hide bubble, default: false-->
         <attr name="bsb_float_precision" format="integer"/> <!--set float precision -->
         <attr name="bsb_bubble_size" format="integer"/> <!-- set bubble size -->
+        <attr name="bsb_set_track_prefix" format="string"/>
     </declare-styleable>
 </resources>

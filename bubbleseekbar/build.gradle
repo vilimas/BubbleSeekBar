@@ -30,7 +30,7 @@ dependencies {
 
 def libraryGroupId = 'lt.farmis.libraries'
 def libraryArtifactId = 'bubble-seek-bar'
-def libraryVersion = '1.0.2'
+def libraryVersion = '1.0.3'
 
 
 task androidSourcesJar(type: Jar) {

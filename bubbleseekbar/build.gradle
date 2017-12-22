@@ -5,7 +5,7 @@ apply plugin: 'maven-publish'
 def VERSION_NAME = "3.6.1"
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "25.0.2"
 
     defaultConfig {
@@ -25,12 +25,12 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    provided 'com.android.support:appcompat-v7:25.3.1'
+    provided 'com.android.support:appcompat-v7:26.1.0'
 }
 
 def libraryGroupId = 'lt.farmis.libraries'
 def libraryArtifactId = 'bubble-seek-bar'
-def libraryVersion = '1.0.3'
+def libraryVersion = '1.0.5'
 
 
 task androidSourcesJar(type: Jar) {

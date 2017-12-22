@@ -521,7 +521,7 @@ public class BubbleSeekBar extends View {
                 if (TextUtils.isEmpty(numberPrefix)) {
                     canvas.drawText(String.valueOf(getProgress()), mThumbCenterX, y_, mPaint);
                 } else {
-                    canvas.drawText(String.valueOf(getProgressFloat()) + " " + numberPrefix, mThumbCenterX, y_, mPaint);
+                    canvas.drawText(String.valueOf(getProgress()) + " "+ numberPrefix, mThumbCenterX, y_, mPaint);
                 }
             }
         }

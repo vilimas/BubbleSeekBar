@@ -17,9 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="16dp"
         android:layout_marginTop="8dp"
+        android:paddingLeft="16dp"
         app:bsb_show_section_mark="true"
         app:bsb_show_section_text="true"
-        app:bsb_show_thumb_text="true"/>
+        app:bsb_show_thumb_text="true"
+        app:bsb_set_track_prefix="BBCH"
+        android:paddingStart="16dp" />
 
     <TextView
         android:layout_width="wrap_content"
